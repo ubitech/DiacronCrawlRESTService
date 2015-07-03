@@ -1,4 +1,5 @@
 target
+activemq-data
 *.iml
 .idea
 .directory
