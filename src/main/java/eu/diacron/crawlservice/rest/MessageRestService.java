@@ -40,7 +40,7 @@ public class MessageRestService {
         try {
 
             // STEP 1: create new crawl process for a specific url 
-            crawlid = Util.crawlpage(new URL(pageToCrawl));
+            crawlid = Util.getCrawlid(new URL(pageToCrawl));
 
             System.out.println("Crawl page: " + pageToCrawl + " with ID: " + crawlid);
 

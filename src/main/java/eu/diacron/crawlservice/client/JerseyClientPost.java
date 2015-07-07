@@ -42,19 +42,19 @@ public class JerseyClientPost {
             String output = response.getEntity(String.class);
             System.out.println(output);
 
-            String topicName = output.trim();
-
-            System.out.println("topicName from Producer " + topicName);
-
-            CrawlTopicConsumer consumer = new CrawlTopicConsumer(BROKER_URL, topicName, CONSUME_LIFE_TIME_IN_MS);
-            thread(consumer, false);
-
-            WebResource initcrawlRequest = client.resource("http://localhost:8181/Diacrawl/rest/crawl/initcrawl");
-
-            ClientResponse initcrawlResponse = initcrawlRequest.post(ClientResponse.class, topicName);
-            if (initcrawlResponse.getStatus() != 201) {
-                throw new RuntimeException("Failed : HTTP error code : " + initcrawlResponse.getStatus());
-            }
+//            String topicName = output.trim();
+//
+//            System.out.println("topicName from Producer " + topicName);
+//
+//            CrawlTopicConsumer consumer = new CrawlTopicConsumer(BROKER_URL, topicName, CONSUME_LIFE_TIME_IN_MS);
+//            thread(consumer, false);
+//
+//            WebResource initcrawlRequest = client.resource("http://localhost:8181/Diacrawl/rest/crawl/initcrawl");
+//
+//            ClientResponse initcrawlResponse = initcrawlRequest.post(ClientResponse.class, topicName);
+//            if (initcrawlResponse.getStatus() != 201) {
+//                throw new RuntimeException("Failed : HTTP error code : " + initcrawlResponse.getStatus());
+//            }
 
         } catch (Exception e) {
 
