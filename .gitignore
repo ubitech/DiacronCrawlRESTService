@@ -3,3 +3,5 @@ activemq-data
 *.iml
 .idea
 .directory
+.settings
+nb-configuration.xml

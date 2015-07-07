@@ -5,8 +5,8 @@ package eu.diacron.crawlservice.rest;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import eu.diacron.crawlservice.activemq.QueueManager;
-import static eu.diacron.crawlservice.activemq.QueueManager.thread;
+import eu.diacron.crawlservice.activemq.CrawlTopicProducer;
+import static eu.diacron.crawlservice.activemq.SimpleJmsApp.thread;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.quartz.Job;
@@ -21,6 +21,8 @@ import org.quartz.SchedulerException;
  */
 public class CrawlStatusJob implements Job {
 
+    private static final String BROKER_URL = "tcp://192.168.7.139:61616?jms.prefetchPolicy.all=1000";
+
     public void execute(JobExecutionContext context)
             throws JobExecutionException {
 
@@ -34,15 +36,19 @@ public class CrawlStatusJob implements Job {
 
             System.out.println("job name " + crawlid);
 
-            QueueManager.CompletedCrawlsProducer completedCrawlsProducer = new QueueManager.CompletedCrawlsProducer();
-            completedCrawlsProducer.setCrawlid(crawlid);
-            thread(new QueueManager.CompletedCrawlsProducer(), false);
+            String topicName = crawlid;
+
+            System.out.println("topicName from Producer " + topicName);
+            CrawlTopicProducer producer = new CrawlTopicProducer(BROKER_URL, topicName);
+            thread(producer, false);
 
             //After finish...
             //1. deledeJob from scheduler
             context.getScheduler().deleteJob(context.getJobDetail().getKey());
 
         } catch (SchedulerException ex) {
+            Logger.getLogger(CrawlStatusJob.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(CrawlStatusJob.class.getName()).log(Level.SEVERE, null, ex);
         }
 

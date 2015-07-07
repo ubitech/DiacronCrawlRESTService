@@ -1,7 +1,5 @@
 package eu.diacron.crawlservice.rest;
 
-import eu.diacron.crawlservice.activemq.QueueManager;
-import static eu.diacron.crawlservice.activemq.QueueManager.thread;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.quartz.Job;

@@ -12,11 +12,14 @@ package eu.diacron.crawlservice.client;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import eu.diacron.crawlservice.activemq.QueueManager;
-import static eu.diacron.crawlservice.activemq.QueueManager.thread;
+import eu.diacron.crawlservice.activemq.CrawlTopicConsumer;
+import static eu.diacron.crawlservice.activemq.SimpleJmsApp.thread;
 
 // class to test crawl scheduler service
 public class JerseyClientPost {
+
+    private static final String BROKER_URL = "tcp://192.168.7.139:61616?jms.prefetchPolicy.all=1000";
+    private static final int CONSUME_LIFE_TIME_IN_MS = 5 * 1000;
 
     public static void main(String[] args) {
 
@@ -24,7 +27,7 @@ public class JerseyClientPost {
 
             Client client = Client.create();
 
-            WebResource webResource = client.resource("http://localhost:8181/Diacrawl/rest/message/post");
+            WebResource webResource = client.resource("http://localhost:8181/Diacrawl/rest/crawl/getid");
 
             String input = "http://www.ubitech.eu/";
 
@@ -39,12 +42,19 @@ public class JerseyClientPost {
             String output = response.getEntity(String.class);
             System.out.println(output);
 
-//            Thread.sleep(10000);
-//            
-//            
-//            QueueManager.CompletedCrawlsConsumer completedCrawlsConsumer = new QueueManager.CompletedCrawlsConsumer();
-//            completedCrawlsConsumer.setCrawlid(output.trim());
-//            thread(completedCrawlsConsumer, false);
+            String topicName = output.trim();
+
+            System.out.println("topicName from Producer " + topicName);
+
+            CrawlTopicConsumer consumer = new CrawlTopicConsumer(BROKER_URL, topicName, CONSUME_LIFE_TIME_IN_MS);
+            thread(consumer, false);
+
+            WebResource initcrawlRequest = client.resource("http://localhost:8181/Diacrawl/rest/crawl/initcrawl");
+
+            ClientResponse initcrawlResponse = initcrawlRequest.post(ClientResponse.class, topicName);
+            if (initcrawlResponse.getStatus() != 201) {
+                throw new RuntimeException("Failed : HTTP error code : " + initcrawlResponse.getStatus());
+            }
 
         } catch (Exception e) {
 

@@ -1,5 +1,7 @@
 package eu.diacron.crawlservice.rest;
 
+import eu.diacron.crawlservice.activemq.CrawlTopicConsumer;
+import static eu.diacron.crawlservice.activemq.SimpleJmsApp.thread;
 import eu.diacron.crawlservice.app.Util;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,22 +27,39 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
 //http://localhost:8080/Diacrawl/rest/post
-@Path("/message")
+@Path("/crawl")
 public class MessageRestService {
 
     @POST
-    @Path("/post")
+    @Path("/getid")
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response crawlpage(String pageToCrawl) {
+    public Response getcrawlid(String pageToCrawl) {
 
         String crawlid = null;
 
         try {
 
             // STEP 1: create new crawl process for a specific url 
-             crawlid = Util.crawlpage(new URL(pageToCrawl));
+            crawlid = Util.crawlpage(new URL(pageToCrawl));
 
             System.out.println("Crawl page: " + pageToCrawl + " with ID: " + crawlid);
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MessageRestService.class.getName()).log(Level.SEVERE, null, ex);
+
+            return Response.status(400).entity("Page to Crawl has malformed url").build();
+        }
+
+        return Response.status(201).entity(crawlid).build();
+
+    }
+
+    @POST
+    @Path("/initcrawl")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response initcrawl(String crawlid) {
+
+        try {
 
             JobDetail job = JobBuilder.newJob(CrawlStatusJob.class).withIdentity(crawlid, "checkCrawlStatus").build();
             job.getJobDataMap().put("CRAWL_ID", crawlid);
@@ -57,11 +76,7 @@ public class MessageRestService {
 
         } catch (SchedulerException ex) {
             Logger.getLogger(MessageRestService.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(MessageRestService.class.getName()).log(Level.SEVERE, null, ex);
-
-            return Response.status(400).entity("Page to Crawl has malformed url").build();
-        }
+        } 
 
         return Response.status(201).entity(crawlid).build();
 
