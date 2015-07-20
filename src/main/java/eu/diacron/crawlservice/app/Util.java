@@ -80,13 +80,14 @@ public final class Util {
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
                 new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
-                new UsernamePasswordCredentials("diachron", "7nD9dNGshTtficn"));
+                new UsernamePasswordCredentials(Configuration.REMOTE_CRAWLER_USERNAME, Configuration.REMOTE_CRAWLER_PASS));        
         CloseableHttpClient httpclient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();
         try {
-            HttpPost httppost = new HttpPost("http://diachron.hanzoarchives.com/crawl");
-
+            //HttpPost httppost = new HttpPost("http://diachron.hanzoarchives.com/crawl");
+            HttpPost httppost = new HttpPost(Configuration.REMOTE_CRAWLER_URL_CRAWL);
+            
             List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
             urlParameters.add(new BasicNameValuePair("name", UUID.randomUUID().toString()));
             urlParameters.add(new BasicNameValuePair("scope", "page"));
@@ -133,13 +134,15 @@ public final class Util {
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
                 new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
-                new UsernamePasswordCredentials("diachron", "7nD9dNGshTtficn"));
+                new UsernamePasswordCredentials(Configuration.REMOTE_CRAWLER_USERNAME, Configuration.REMOTE_CRAWLER_PASS));        
+
         CloseableHttpClient httpclient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();
         try {
-            HttpGet httpget = new HttpGet("http://diachron.hanzoarchives.com/crawl/" + crawlid);
-
+            //HttpGet httpget = new HttpGet("http://diachron.hanzoarchives.com/crawl/" + crawlid);
+            HttpGet httpget = new HttpGet(Configuration.REMOTE_CRAWLER_URL_CRAWL + crawlid);
+            
             System.out.println("Executing request " + httpget.getRequestLine());
             CloseableHttpResponse response = httpclient.execute(httpget);
             try {
@@ -191,16 +194,22 @@ public final class Util {
         System.out.println("get crawlid");
 
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(
+/*        credsProvider.setCredentials(
                 new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
                 new UsernamePasswordCredentials("diachron", "7nD9dNGshTtficn"));
+        */
+        
+        credsProvider.setCredentials(
+                new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
+                new UsernamePasswordCredentials(Configuration.REMOTE_CRAWLER_USERNAME, Configuration.REMOTE_CRAWLER_PASS));        
         CloseableHttpClient httpclient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();
         try {
 
-            HttpGet httpget = new HttpGet("http://diachron.hanzoarchives.com/warcs/" + crawlid);
-
+            //HttpGet httpget = new HttpGet("http://diachron.hanzoarchives.com/warcs/" + crawlid);
+            HttpGet httpget = new HttpGet(Configuration.REMOTE_CRAWLER_URL + crawlid);
+            
             System.out.println("Executing request " + httpget.getRequestLine());
             CloseableHttpResponse response = httpclient.execute(httpget);
             try {
@@ -255,7 +264,7 @@ public final class Util {
             URL warcURL = new URL(warcURLasString);
             String fileName = FilenameUtils.getBaseName(warcURLasString);
 
-            warcfile = new File("/tmp/" + fileName + ".gz");
+            warcfile = new File(Configuration.TMP_FOLDER_CRAWL + fileName + ".gz");
             FileUtils.copyURLToFile(warcURL, warcfile);
         } catch (IOException ex) {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
@@ -355,7 +364,7 @@ public final class Util {
         try{
         //fileName = targetFileNameFullPath + ".nt";
         FileWriter outToSave = new FileWriter(rdfizedWarcFilepath);
-        model.write(outToSave, "N3");
+        model.write(outToSave, Configuration.TMP_SERIALIZATION_RDF_FORMAT);
         } catch (IOException ex) {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -367,13 +376,14 @@ public final class Util {
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
                 new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
-                new UsernamePasswordCredentials("diachron", "7nD9dNGshTtficn"));
+                new UsernamePasswordCredentials(Configuration.REMOTE_CRAWLER_USERNAME, Configuration.REMOTE_CRAWLER_PASS));        
         CloseableHttpClient httpclient = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider)
                 .build();
         try {
-            HttpGet httpget = new HttpGet("http://diachron.hanzoarchives.com/crawl");
-
+            //HttpGet httpget = new HttpGet("http://diachron.hanzoarchives.com/crawl");
+            HttpGet httpget = new HttpGet(Configuration.REMOTE_CRAWLER_URL_CRAWL);
+            
             System.out.println("Executing request " + httpget.getRequestLine());
             CloseableHttpResponse response = httpclient.execute(httpget);
             try {
@@ -481,7 +491,7 @@ public final class Util {
 
         }
         
-        storeRDFizedWarcFile(model,"/tmp/"+crawlid+"RDFized.n3");
+        storeRDFizedWarcFile(model,Configuration.TMP_FOLDER_CRAWL + crawlid + "RDFized." + Configuration.TMP_SERIALIZATION_RDF_FILEEXT);
 
         return true;
     }

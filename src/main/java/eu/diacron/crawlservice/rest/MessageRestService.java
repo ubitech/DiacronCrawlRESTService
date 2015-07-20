@@ -66,7 +66,7 @@ public class MessageRestService {
 
         try {
             ConfigController configController = ConfigController.getInstance();
-            configController.readProperties();
+            //configController.readProperties();
             JobDetail job = JobBuilder.newJob(CrawlStatusJob.class).withIdentity(crawlid, "checkCrawlStatus").build();
             job.getJobDataMap().put("CRAWL_ID", crawlid);
             job.getJobDataMap().put("status", "");

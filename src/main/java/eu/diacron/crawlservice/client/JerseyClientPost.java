@@ -18,7 +18,7 @@ import static eu.diacron.crawlservice.activemq.SimpleJmsApp.thread;
 // class to test crawl scheduler service
 public class JerseyClientPost {
 
-    private static final String BROKER_URL = "tcp://192.168.7.139:61616?jms.prefetchPolicy.all=1000";
+    private static final String BROKER_URL = "tcp://127.0.0.1:61616?jms.prefetchPolicy.all=1000";
     private static final int CONSUME_LIFE_TIME_IN_MS = 5000 * 1000;
 
     public static void main(String[] args) {
@@ -52,7 +52,7 @@ public class JerseyClientPost {
             CrawlTopicConsumer consumer = new CrawlTopicConsumer(BROKER_URL, topicName, CONSUME_LIFE_TIME_IN_MS);
             thread(consumer, false);
 
-            WebResource initcrawlRequest = client.resource("http://localhost:8181/Diacrawl/rest/crawl/initcrawl");
+            WebResource initcrawlRequest = client.resource("http://localhost:8080/Diacrawl/rest/crawl/initcrawl");
 
             ClientResponse initcrawlResponse = initcrawlRequest.post(ClientResponse.class, topicName);
             if (initcrawlResponse.getStatus() != 201) {
