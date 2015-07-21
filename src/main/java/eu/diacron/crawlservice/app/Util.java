@@ -14,6 +14,7 @@ import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import com.hp.hpl.jena.vocabulary.XSD;
+import eu.diachron.rdf.DIACHRONModelConverter;
 import eu.diacron.crawlservice.config.Configuration;
 import java.io.BufferedReader;
 import java.io.File;
@@ -161,6 +162,7 @@ public final class Util {
                 }
                 in.close();
 
+                // TO-DO should be removed in the future and handle it more gracefully
                 result = result.replace("u'", "'");
                 result = result.replace("'", "\"");
 
@@ -492,11 +494,13 @@ public final class Util {
         }
         
         storeRDFizedWarcFile(model,Configuration.TMP_FOLDER_CRAWL + crawlid + "RDFized." + Configuration.TMP_SERIALIZATION_RDF_FILEEXT);
-
+        DIACHRONModelConverter conv = new DIACHRONModelConverter();
+        conv.convert(Configuration.TMP_FOLDER_CRAWL + crawlid + "RDFized."    + Configuration.TMP_SERIALIZATION_RDF_FILEEXT,
+                     Configuration.TMP_FOLDER_CRAWL + crawlid + "diachroned." + Configuration.TMP_SERIALIZATION_RDF_FILEEXT);
+        
         return true;
     }
-    
-    
+
 
     public static void main(String[] args) throws Exception {
 //        String urlstring = "http://hanzoenterprise.s3.amazonaws.com/RaC/DIACHRON/7551fda7-08cf-4662-9bd6-670006d1e027/7551fda7-08cf-4662-9bd6-670006d1e027-crawl/7551fda7-08cf-4662-9bd6-670006d1e027-crawl-20150707131529-00000-560e5316-271e-44b3-9222-0c9ce38ff61c.warc.gz?Signature=hbg6ecctMldLf%2BwA7ldIRT77O4s%3D&Expires=1436347898&AWSAccessKeyId=0WTGAF2NBCANE1MSZQG2&x-amz-storage-class=REDUCED_REDUNDANCY";

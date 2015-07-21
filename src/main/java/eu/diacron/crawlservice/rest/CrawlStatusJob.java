@@ -5,8 +5,6 @@ package eu.diacron.crawlservice.rest;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import eu.diacron.crawlservice.activemq.CrawlTopicProducer;
-import static eu.diacron.crawlservice.activemq.SimpleJmsApp.thread;
 import eu.diacron.crawlservice.app.Util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +12,6 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.SchedulerException;
 
 /**
  *
