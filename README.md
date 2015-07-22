@@ -51,8 +51,8 @@ BROKER_URL = tcp://127.0.0.1:61616?jms.prefetchPolicy.all=1000
 REMOTE_CRAWLER_URL = http://diachron.hanzoarchives.com/warcs/
 REMOTE_CRAWLER_URL_CRAWL_INIT = http://diachron.hanzoarchives.com/crawl
 REMOTE_CRAWLER_URL_CRAWL = http://diachron.hanzoarchives.com/crawl/
-REMOTE_CRAWLER_USERNAME=diachron
-REMOTE_CRAWLER_PASS=7nD9dNGshTtficn
+REMOTE_CRAWLER_USERNAME=****
+REMOTE_CRAWLER_PASS=*******
 TMP_FOLDER_CRAWL = /tmp/
 TMP_SERIALIZATION_RDF_FORMAT  = RDF/XML                                                                                                                                                         
 TMP_SERIALIZATION_RDF_FILEEXT = rdf 
