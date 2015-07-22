@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.diacron.crawlservice.rest;
+package eu.diacron.crawlservice.scheduler;
 
 import eu.diacron.crawlservice.activemq.CrawlTopicProducer;
-import static eu.diacron.crawlservice.activemq.SimpleJmsApp.thread;
+import static eu.diacron.crawlservice.activemq.TestJmsApp.thread;
 import eu.diacron.crawlservice.app.Util;
 import eu.diacron.crawlservice.config.Configuration;
 import java.util.logging.Level;
@@ -23,7 +23,6 @@ public class CrawlStatusJobListener implements JobListener {
 
     public static final String LISTENER_NAME = "crawlStatusJobListener";
     //private static final String BROKER_URL = "tcp://192.168.7.139:61616?jms.prefetchPolicy.all=1000";
-    
 
     @Override
     public String getName() {
@@ -75,6 +74,7 @@ public class CrawlStatusJobListener implements JobListener {
                 //sent message to Topic
                 System.out.println("topicName from Producer " + crawlid);
                 String BROKER_URL = Configuration.BROKER_URL;
+                System.out.println("Configuration.BROKER_URL" + Configuration.BROKER_URL);
                 CrawlTopicProducer producer = new CrawlTopicProducer(BROKER_URL, crawlid);
                 thread(producer, false);
                 //deledeJob from scheduler context

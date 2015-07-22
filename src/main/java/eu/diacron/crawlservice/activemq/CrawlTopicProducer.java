@@ -17,7 +17,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerService;
 
 public class CrawlTopicProducer implements Runnable
 {
@@ -54,11 +53,11 @@ public class CrawlTopicProducer implements Runnable
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
             // Create a messages
-            String text = "SimpleTopicProducer - From: " + Thread.currentThread().getName() + " : " + this.hashCode();
+            String text = "CrawlTopicProducer - From: " + Thread.currentThread().getName() + " : " + this.hashCode();
             TextMessage message = session.createTextMessage(text);
 
             // Tell the producer to send the message
-            System.out.println("Sent message: " + message.hashCode() + " : " + Thread.currentThread().getName());
+            System.out.println("Sent message to Topic: " + message.hashCode() + " : " + Thread.currentThread().getName());
             producer.send(message);
 
             // Clean up
@@ -67,7 +66,7 @@ public class CrawlTopicProducer implements Runnable
         }
         catch (Exception e)
         {
-            System.out.println("Caught: " + e);
+            System.out.println("Caught: " + e + " CrawlTopicProducer failed to sent message to topic");
             e.printStackTrace();
         }
     }

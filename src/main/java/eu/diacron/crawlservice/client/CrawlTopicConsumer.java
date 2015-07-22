@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package eu.diacron.crawlservice.activemq;
+package eu.diacron.crawlservice.client;
 
 /**
  *

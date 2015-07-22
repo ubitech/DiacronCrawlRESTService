@@ -1,11 +1,9 @@
 package eu.diachron.rdf;
 
-import eu.diacron.crawlservice.config.Configuration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import org.athena.imis.diachron.archive.datamapping.MultidimensionalConverter;
 import org.athena.imis.diachron.archive.datamapping.OntologyConverter;
 
 public class DIACHRONModelConverter

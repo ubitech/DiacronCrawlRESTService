@@ -1,4 +1,4 @@
-package eu.diacron.crawlservice.rest;
+package eu.diacron.crawlservice.scheduler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

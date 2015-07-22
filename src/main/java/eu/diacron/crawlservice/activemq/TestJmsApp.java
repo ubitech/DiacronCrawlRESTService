@@ -6,9 +6,11 @@
 
 package eu.diacron.crawlservice.activemq;
 
+import eu.diacron.crawlservice.client.CrawlTopicConsumer;
 
 
-public class SimpleJmsApp
+
+public class TestJmsApp
 {
     private static final String BROKER_URL = "tcp://localhost:61616?jms.prefetchPolicy.all=1000";
     private static final int CONSUME_LIFE_TIME_IN_MS = 5 * 1000;

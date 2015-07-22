@@ -1,7 +1,7 @@
 package eu.diacron.crawlservice.rest;
 
-import eu.diacron.crawlservice.activemq.CrawlTopicConsumer;
-import static eu.diacron.crawlservice.activemq.SimpleJmsApp.thread;
+import eu.diacron.crawlservice.scheduler.CrawlStatusJobListener;
+import eu.diacron.crawlservice.scheduler.CrawlStatusJob;
 import eu.diacron.crawlservice.app.Util;
 import eu.diacron.crawlservice.config.ConfigController;
 import java.net.MalformedURLException;
@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
-import static org.quartz.JobKey.jobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
@@ -31,7 +30,7 @@ import org.quartz.impl.matchers.KeyMatcher;
 
 //http://localhost:8080/Diacrawl/rest/post
 @Path("/crawl")
-public class MessageRestService {
+public class DiacrawlRestService {
 
     @POST
     @Path("/getid")
@@ -50,7 +49,7 @@ public class MessageRestService {
             System.out.println("Crawl page: " + pageToCrawl + " with ID: " + crawlid);
 
         } catch (MalformedURLException ex) {
-            Logger.getLogger(MessageRestService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiacrawlRestService.class.getName()).log(Level.SEVERE, null, ex);
 
             return Response.status(400).entity("Page to Crawl has malformed url").build();
         }
@@ -66,7 +65,7 @@ public class MessageRestService {
 
         try {
             ConfigController configController = ConfigController.getInstance();
-            //configController.readProperties();
+            configController.readProperties();
             JobDetail job = JobBuilder.newJob(CrawlStatusJob.class).withIdentity(crawlid, "checkCrawlStatus").build();
             job.getJobDataMap().put("CRAWL_ID", crawlid);
             job.getJobDataMap().put("status", "");
@@ -88,7 +87,7 @@ public class MessageRestService {
             scheduler.scheduleJob(job, trigger);
 
         } catch (SchedulerException ex) {
-            Logger.getLogger(MessageRestService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiacrawlRestService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return Response.status(201).entity(crawlid).build();
@@ -127,7 +126,7 @@ public class MessageRestService {
             }
 
         } catch (SchedulerException ex) {
-            Logger.getLogger(MessageRestService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiacrawlRestService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return Response.status(200).entity(result).build();

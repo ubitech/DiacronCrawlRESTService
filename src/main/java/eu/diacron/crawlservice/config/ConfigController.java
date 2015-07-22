@@ -46,6 +46,7 @@ public final class ConfigController {
             Configuration.REMOTE_CRAWLER_URL        = prop.getProperty("REMOTE_CRAWLER_URL").trim();
             Configuration.REMOTE_CRAWLER_USERNAME   = prop.getProperty("REMOTE_CRAWLER_USERNAME");
             Configuration.REMOTE_CRAWLER_PASS       = prop.getProperty("REMOTE_CRAWLER_PASS");
+            Configuration.REMOTE_CRAWLER_URL_CRAWL_INIT  = prop.getProperty("REMOTE_CRAWLER_URL_CRAWL_INIT");
             Configuration.REMOTE_CRAWLER_URL_CRAWL  = prop.getProperty("REMOTE_CRAWLER_URL_CRAWL");
             Configuration.TMP_FOLDER_CRAWL          = prop.getProperty("TMP_FOLDER_CRAWL");
             Configuration.TMP_SERIALIZATION_RDF_FORMAT = prop.getProperty("TMP_SERIALIZATION_RDF_FORMAT");

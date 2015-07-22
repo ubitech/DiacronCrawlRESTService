@@ -1,4 +1,4 @@
-package eu.diacron.crawlservice.rest;
+package eu.diacron.crawlservice.scheduler;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
